@@ -2,9 +2,8 @@
 //  ContentView.swift
 //  SwiftUI Tutorial: Working with Form
 //
-//  Created by Alvin Sosangyo on 02/10/22.
+//  Created by Alvin Sosangyo on 02/11/22.
 //
-
 
 import SwiftUI
 
@@ -54,7 +53,6 @@ struct ContentView: View {
     } //body
     
 } //ContentView
-
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
@@ -92,11 +90,7 @@ struct SettingsView: View {
                         Text("Dark Mode")
                     }
                     
-                    Stepper("Font Size: \(fontSize)", onIncrement: {
-                        fontSize += 1
-                    }, onDecrement: {
-                        fontSize -= 1
-                    })
+                    Stepper("Font Size: \(fontSize)", value: $fontSize, in: 7...30)
                     
                 }
                 
@@ -105,5 +99,4 @@ struct SettingsView: View {
         } //NavigationView
         
     } //body
-
 } //SettingsView

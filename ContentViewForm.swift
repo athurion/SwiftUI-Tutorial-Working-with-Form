@@ -2,7 +2,7 @@
 //  ContentView.swift
 //  SwiftUI Tutorial: Working with Form
 //
-//  Created by Alvin Sosangyo on 02/11/22.
+//  Created by Alvin Sosangyo on 02/14/22.
 //
 
 import SwiftUI
@@ -10,27 +10,24 @@ import SwiftUI
 struct ContentView: View {
     
     @State private var inputText: String = ""
+    @State private var showState: Bool = false
     @State private var selectedFont: String = "Arial"
     @State private var darkMode: Bool = false
     @State private var fontSize: Int = 14
-    @State private var showState: Bool = false
     
     var body: some View {
         
         ZStack {
             
             if darkMode == true {
-                Color.black
-                    .ignoresSafeArea(.all)
-            } else {
-                Color.white
+                Color.black.ignoresSafeArea(.all)
             }
             
             VStack {
                 
                 TextEditor(text: $inputText)
-                    .font(.custom(selectedFont, size: CGFloat(fontSize)))
                     .padding()
+                    .font(.custom(selectedFont, size: CGFloat(fontSize)))
                 
                 Button(action: {
                     showState.toggle()
@@ -47,27 +44,25 @@ struct ContentView: View {
             
         } //ZStack
         .sheet(isPresented: $showState) {
-            SettingsView(selectedFont: $selectedFont, darkMode: $darkMode, fontSize: $fontSize)
+            SettingsView(selectedFont: $selectedFont, fontSize: $fontSize, darkMode: $darkMode)
         }
         
     } //body
     
 } //ContentView
+
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
     }
 }
 
-
 struct SettingsView: View {
     
-    var fontList = ["Arial", "Charter", "Futura"]
-    
+    let fontList = ["Arial", "Charter", "Futura"]
     @Binding var selectedFont: String
-    @Binding var darkMode: Bool
     @Binding var fontSize: Int
-    
+    @Binding var darkMode: Bool
     
     var body: some View {
         
@@ -75,22 +70,21 @@ struct SettingsView: View {
             
             Form {
                 
-                Section(header: Text("Font Style")) {
-                    Picker("Font", selection: $selectedFont) {
+                Section(header: Text("Font")) {
+                    
+                    Picker("Font Style", selection: $selectedFont) {
                         ForEach(fontList, id: \.self) {
                             Text($0)
                         }
                     }
                     
+                    Stepper("Font Size: \(fontSize)", value: $fontSize, in: 7...30)
+                    
                 }
                 
                 Section(header: Text("Background")) {
                     
-                    Toggle(isOn: $darkMode) {
-                        Text("Dark Mode")
-                    }
-                    
-                    Stepper("Font Size: \(fontSize)", value: $fontSize, in: 7...30)
+                    Toggle("Dark Mode", isOn: $darkMode)
                     
                 }
                 
@@ -99,4 +93,6 @@ struct SettingsView: View {
         } //NavigationView
         
     } //body
+    
 } //SettingsView
+
